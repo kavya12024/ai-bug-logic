@@ -1,0 +1,101 @@
+{
+  "name": "ai-bug-fixer",
+  "displayName": "AI Bug Fixer",
+  "description": "Automatically fix code errors using AI-powered suggestions",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other",
+    "Debuggers"
+  ],
+  "activationEvents": [
+    "onCommand:aiBugFixer.fixFile",
+    "onCommand:aiBugFixer.fixWorkspace",
+    "onCommand:aiBugFixer.showLogs"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "aiBugFixer.fixFile",
+        "title": "AI Bug Fixer: Fix Current File",
+        "icon": "$(lightbulb)"
+      },
+      {
+        "command": "aiBugFixer.fixWorkspace",
+        "title": "AI Bug Fixer: Fix All Files in Workspace"
+      },
+      {
+        "command": "aiBugFixer.showLogs",
+        "title": "AI Bug Fixer: Show Logs"
+      },
+      {
+        "command": "aiBugFixer.stopFixer",
+        "title": "AI Bug Fixer: Stop Current Operation"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "aiBugFixer.fixFile",
+          "group": "1_modification",
+          "when": "!editorReadonly"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "aiBugFixer.fixFile",
+          "group": "1_modification",
+          "when": "!editorReadonly"
+        }
+      ]
+    },
+    "configuration": [
+      {
+        "title": "AI Bug Fixer",
+        "properties": {
+          "aiBugFixer.backendUrl": {
+            "type": "string",
+            "default": "http://localhost:5000",
+            "description": "URL of the AI Bug Fixer backend API"
+          },
+          "aiBugFixer.maxAttempts": {
+            "type": "integer",
+            "default": 5,
+            "description": "Maximum fix attempts per file"
+          },
+          "aiBugFixer.timeout": {
+            "type": "integer",
+            "default": 30,
+            "description": "Timeout in seconds for code execution"
+          },
+          "aiBugFixer.autoShowDiff": {
+            "type": "boolean",
+            "default": true,
+            "description": "Automatically show diff after fixing"
+          },
+          "aiBugFixer.showNotifications": {
+            "type": "boolean",
+            "default": true,
+            "description": "Show notifications for fix results"
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.75.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {}
+}

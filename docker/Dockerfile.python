@@ -1,0 +1,9 @@
+# Dockerfile for Python execution
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Add empty handler for code injection
+RUN echo 'print("Python container ready")' > /app/run.py
+
+CMD ["python", "/app/run.py"]
