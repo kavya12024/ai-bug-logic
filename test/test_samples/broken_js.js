@@ -2,7 +2,7 @@
 
 // Missing semicolon and undefined function
 const numbers = [1, 2, 3, 4, 5];
-// // callUndefinedFunction() - function not defined; - function not defined;
+; // callUndefinedFunction() - function not defined - function not defined; - function not defined;
 
 // Function with syntax error
 function calculateMean(nums) {

@@ -197,6 +197,7 @@ def main():
     if passed >= 4:  # Minimum viable setup
         print("✅ System is ready to run!")
         print("\nNext Steps:")
+        print("python run_tests.py   # Test python language")
         print("python fix_files_ollama.py   # Test all languages")
         print("="*70 + "\n")
         return 0

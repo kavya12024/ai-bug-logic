@@ -7,5 +7,5 @@ def calculate_mean(numbers):
     else:
         return 0
 
-result = calculate_mean([1, 2, 3, 4, 5])
+result = calculate_mean([1, 2, 3, 4])
 print(result)
