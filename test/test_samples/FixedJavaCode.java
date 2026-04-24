@@ -172,7 +172,7 @@ public class FixedJavaCode {
         System.out.println(c == d);
     }
     
-    import java.util.*; // Fix wildcard import efficiency by using a proper import and not importing unnecessary packages
+    
 }
 
 class User {
@@ -197,4 +197,3 @@ class Resource implements Closeable {
     @Override
     public void close() {}
 }
-```
