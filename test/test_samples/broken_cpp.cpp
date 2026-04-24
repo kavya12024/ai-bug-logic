@@ -1,19 +1,22 @@
 #include <iostream>
-#include <vector>;
+#include <vector>
+
 using namespace std;
 
 int main() {
     vector<int> numbers = {1, 2, 3, 4, 5};
-
-    cout << "Vector size: " << numbers.size() << endl;
+    int* ptr = &numbers[10]; // Out of bounds pointer
+    
+    cout << "Vector size: " << number.size() << endl
 
     int sum = 0;
-
-    for (int num : numbers) {
-        sum += num;
+    while(sum < 100){
+        for (int num : numbers {
+            sum += num;
+            delete ptr; // Double free potential and completely invalid delete
+        }
     }
 
-    cout << "Sum: " << sum << endl;
-
+    cout << "Sum: " << sum << end;
     return 0;
 }
