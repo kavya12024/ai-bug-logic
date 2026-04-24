@@ -135,7 +135,7 @@ def get_detected_errors(code: str, language: str) -> list:
         return [Error(type='info', message='No errors detected')]
 
 
-def fix_and_save_file(file_path, language, use_ollama=True, ask_confirmation=True, git_handler=None, verbose=True):
+def fix_and_save_file(file_path, language, use_ollama=True, ask_confirmation=True, git_handler=None, verbose=True, push=False):
     """Fix a broken file and save the correction with user confirmation"""
     
     with open(file_path, 'r') as f:
@@ -239,18 +239,30 @@ def fix_and_save_file(file_path, language, use_ollama=True, ask_confirmation=Tru
             for err in pr_info['errors']:
                 print(f"  - {err['type']}: {err['message']}")
             print("-" * 70 + "\n")
+            
+            if push:
+                print(f"[*] Pushing to GitHub and preparing Pull Request for branch {branch_name}...")
+                if git_handler.push_branch(branch_name):
+                    pr_url = git_handler.create_github_pull_request(branch_name, str(file_path), errors)
+                    if pr_url:
+                        print(f"[✓] GitHub PR Created: {pr_url}\n")
+                    else:
+                        print("[!] GitHub PR creation failed. Validate GITHUB_TOKEN and repo permissions.\n")
+                else:
+                    print(f"[-] Branch push failed.\n")
         else:
             print("[!] Warning: Git commit failed, but file was updated")
     
     return has_changes
 
 
-def main(batch_mode=False, verbose=True):
+def main(batch_mode=False, verbose=True, push=False):
     """Fix all broken test files
     
     Args:
         batch_mode: Skip user confirmations for faster processing
         verbose: Show detailed output for each file
+        push: Push modifications to GitHub and generate PR
     """
     
     print("\n" + "="*70)
@@ -274,6 +286,7 @@ def main(batch_mode=False, verbose=True):
         ("test/test_samples/broken_python.py", "python"),
         ("test/test_samples/broken_python_advanced.py", "python"),
         ("test/test_samples/broken_python_async.py", "python"),
+        ("test/test_samples/broken_c_advanced.c", "cpp"),
         ("test/test_samples/broken_cpp.cpp", "cpp"),
         ("test/test_samples/broken_cpp_advanced.cpp", "cpp"),
         ("test/test_samples/broken_cpp_modern.cpp", "cpp"),
@@ -303,7 +316,8 @@ def main(batch_mode=False, verbose=True):
                 use_ollama=True,
                 ask_confirmation=not batch_mode,  # Skip confirmation in batch mode
                 git_handler=git_handler,
-                verbose=verbose
+                verbose=verbose,
+                push=push
             )
             results[language] = success
             processed += 1
@@ -341,8 +355,9 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='AI Bug Fixer - Fix code errors with Ollama')
     parser.add_argument('--batch', action='store_true', help='Batch mode: skip confirmations for faster processing')
+    parser.add_argument('--push', action='store_true', help='Push branch to GitHub and create real Pull Request')
     parser.add_argument('--quiet', action='store_true', help='Quiet mode: minimal output')
     parser.add_argument('--no-ollama', action='store_true', help='Disable Ollama fixing, use rule-based fixes only')
     args = parser.parse_args()
     
-    main(batch_mode=args.batch, verbose=not args.quiet)
+    main(batch_mode=args.batch, verbose=not args.quiet, push=args.push)

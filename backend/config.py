@@ -11,6 +11,8 @@ class Config:
     TIMEOUT_SECONDS = int(os.getenv("TIMEOUT_SECONDS", "15"))
     USE_OLLAMA = os.getenv("USE_OLLAMA", "True") == "True"
     OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "codellama:7b")
+    GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+
 
 class DevelopmentConfig(Config):
     """Development configuration"""
