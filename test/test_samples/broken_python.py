@@ -1,11 +1,11 @@
 import json
 import threading
 
-def calculate_mean(numbers
+def calculate_mean(numbers:
     # Complex scoping issue and syntax error
     global total
-    if len(numbers) > 0
-        total = sum([x for x in numbers if type(numbers) == int])
+    if len(numbers) > 0:
+        total = sum([x for x in numbers if type(x) == int])
         return total / len(numbers)
     else:
         return total / 0 # Intentional divide by zero
@@ -15,5 +15,5 @@ def process_background():
 
 # Async thread manipulation without proper start
 t = threading.Thread(target=process_background)
-t.start)
+t.start()
 t.join()
