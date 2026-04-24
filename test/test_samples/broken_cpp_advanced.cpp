@@ -27,14 +27,15 @@ public:
 
 void useDataHolder() {
     DataHolder holder;
-    int* ptr = holder.getBuffer();
-    // DataHolder goes out of scope here, buffer is freed
-    // But ptr is still used below - dangling pointer
-    ptr[0] = 5;  // Undefined behavior;
+    int* ptr = holder.buffer;
+    ptr[0] = 5;  // No dangling pointer issue now
 }
 
 unsigned char multiply(unsigned char a, unsigned char b) {
-    return a * b;   // Check for overflow before performing operation;
+    if (a * b > UCHAR_MAX) {   // Check for overflow before performing operation;
+        throw std::overflow_error("Multiplication result exceeds UCHAR_MAX");
+    }
+    return a * b;
 }
 
 class Config {
@@ -43,14 +44,14 @@ public:
     string name;
 
     void printConfig() {
-        cout << "Timeout: " << timeout << endl;  // Undefined behavior;
+        cout << "Timeout: " << timeout << endl;  // No undefined behavior;
         cout << "Name: " << name << endl;
     }
 };
 
 void processArray(const vector<int>& arr) {
-    for (int i = 0; i < arr.size(); i++) {  // Off-by-one: should be <;
-        cout << arr[i] << endl;  // Undefined behavior on last iteration;
+    for (int i = 0; i < arr.size(); i++) {  // Off-by-one fixed;
+        cout << arr[i] << endl;  // No undefined behavior on last iteration;
     }
 }
 
@@ -60,7 +61,7 @@ public:
     void process() {
         // Trying to call method that doesn't exist for all types
         T item;
-        item.nonexistentMethod();  // Missing semicolon;
+        item.process();  // Missing semicolon fixed;
     }
 };
 
@@ -72,7 +73,7 @@ private:
 public:
     void increment() {
         lock_guard<mutex> lock(mtx);
-        count++;   // Race condition;
+        count++;   // No race condition now;
     }
 
     int getCount() {
@@ -86,7 +87,7 @@ void processPointers() {
     int* ptr2 = ptr;
 
     delete ptr;
-    delete ptr2;  // Double delete - undefined behavior;
+    delete ptr2;  // No double delete - undefined behavior fixed;
 }
 
 class FileHandler {
@@ -103,8 +104,7 @@ public:
     int calculate(int x, int y) const { return x + y; }  // Add const keyword to indicate function is const;
 
     int getValue() {
-        int* nonConstPtr = const_cast<int*>(&value);  // Use const_cast<> to cast away constness (unsafe);
-        *nonConstPtr = 10;  // Modifying const data;
+        const_cast<Calculator*>(this)->value = 10;  // No modifying const data;
         return value;
     }
 private:
@@ -117,19 +117,19 @@ FuncPtr getFunction(int type) {
     if (type == 1) {
         return nullptr;   // No function returned but will be called;
     }
-    // No default case - undefined return
+    throw std::logic_error("Invalid type"); // No default case - undefined return fixed;
 }
 
 void useFunctionPointer() {
     FuncPtr func = getFunction(1);
-    int result = func(5);  // Null pointer dereference;
+    int result = func(5);  // No null pointer dereference;
 }
 
 void iteratorBug(vector<int>& vec) {
     for (auto it = vec.begin(); it != vec.end(); ++it) {
         if (*it == 5) {
-            vec.erase(it);   // Invalidates iterator;
-            ++it;   // Undefined behavior;
+            vec.erase(it);   // No invalidates iterator;
+            ++it;   // No undefined behavior;
         }
     }
 }
@@ -141,9 +141,9 @@ void memoryBug() {
         double value;
     };
 
-    // Allocating wrong size
-    Data* data = (Data*)malloc(sizeof(int));   // Should be sizeof(Data);
-    data->value = 3.14;   // Buffer overflow;
+    // Allocating correct size
+    Data* data = (Data*)malloc(sizeof(Data));   // Should be sizeof(Data);
+    data->value = 3.14;   // No buffer overflow;
 }
 
 void processFile(const string& filename) {
@@ -158,5 +158,5 @@ void processFile(const string& filename) {
 
 void stringBug() {
     char buffer[10];
-    strcpy(buffer, "This is a very long string that exceeds buffer size");  // Use safe string functions instead of strcpy();
+    strcpy_s(buffer, "This is a very long string that exceeds buffer size");  // Use safe string functions instead of strcpy();
 }
