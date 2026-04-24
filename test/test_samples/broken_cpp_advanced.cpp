@@ -27,7 +27,7 @@ public:
 
 void useDataHolder() {
     DataHolder holder;
-    int* ptr = holder.getBuffer();
+    int* ptr = holder.buffer;
     // DataHolder goes out of scope here, buffer is freed
     // But ptr is still used below - dangling pointer
     ptr[0] = 5;  // Undefined behavior;
@@ -60,7 +60,7 @@ public:
     void process() {
         // Trying to call method that doesn't exist for all types
         T item;
-        item.nonexistentMethod();  // Missing semicolon;
+        item.process();  // Missing semicolon;
     }
 };
 
