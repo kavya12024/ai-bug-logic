@@ -7,7 +7,7 @@ class UserAccount:
     def add_transaction(self, amount):
         self.history.append(amount)
 
-def calculate_complex_average(users)
+def calculate_complex_average(users):
     total = 0
     # Will crash with ZeroDivisionError if history array is empty
     for user in users:
