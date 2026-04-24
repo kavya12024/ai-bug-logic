@@ -2,9 +2,9 @@ import asyncio
 import time
 
 async def fetch_data(id):
-    # This is a blocking call inside an async function! 
+    # This is a blocking call inside an async function!
     # It will block the entire event loop, preventing concurrency.
-    time.sleep(2)  
+    time.sleep(2)
     print(f"Fetched data for ID: {id}")
     return {"id": id, "data": "Some data payload"}
 
