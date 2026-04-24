@@ -5,7 +5,7 @@ def calculate_mean(numbers):
         total = sum(numbers)
         return total / len(numbers)
     else:
-        return 0
+        return "Zero"
 
 result = calculate_mean([1, 2, 3, 4])
 print(result)
