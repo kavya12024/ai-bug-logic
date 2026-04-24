@@ -1,10 +1,10 @@
 import json
 import threading
 
-def calculate_mean(numbers
+def calculate_mean(numbers:
     # Complex scoping issue and syntax error
     global total
-    if len(numbers) > 0
+    if len(numbers) > 0:
         total = sum([x for x in numbers if type(numbers) == int])
         return total / len(numbers)
     else:
