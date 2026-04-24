@@ -233,10 +233,10 @@ Return ONLY the fixed code, no explanations."""
             
             thread = threading.Thread(target=call_ollama, daemon=True)
             thread.start()
-            thread.join(timeout=30)  # Wait max 30 seconds
+            thread.join(timeout=180)  # Wait max 180 seconds
             
             if thread.is_alive():
-                logger.warning("Ollama request timed out after 30 seconds - using rule-based fixes only")
+                logger.warning("Ollama request timed out after 180 seconds - using rule-based fixes only")
                 return code
             
             if error_obj[0]:
