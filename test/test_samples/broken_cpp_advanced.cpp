@@ -5,7 +5,7 @@
 #include <thread>
 #include <mutex>
 
-using namespace std;
+using namespace std; // SYNTAX ERROR: missing semicolon;
 
 class ResourceManager {
 public:
