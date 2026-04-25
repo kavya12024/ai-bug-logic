@@ -3,13 +3,13 @@ class UserAccount:
     def __init__(self, name, history=[]):
         self.name = name
         self.history = history
+        self.balance = 0 # LOGIC ERROR: balance never updated
         
     def add_transaction(self, amount):
         self.history.append(amount)
 
-def calculate_complex_average(users)
+def calculate_complex_average(users):
     total = 0
-    # Will crash with ZeroDivisionError if history array is empty
     for user in users:
         total += sum(user.history) / len(user.history)
     return total
