@@ -5,7 +5,7 @@
 void process_string(const char* input) {
     char buffer[10];
     strcpy(buffer, input);
-    printf("Processed: %s\n", buffer)
+    printf("Processed: %s\n", buffer);
 }
 
 int main() {
