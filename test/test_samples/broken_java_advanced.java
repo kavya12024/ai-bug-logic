@@ -28,12 +28,12 @@ public class BrokenJava {
     }
 
     public static void main(String[] args) {
-        HashMap<String, String> map = null
+        HashMap<String, String> map = null;
         if (args.length > 0) {
             map = new HashMap<>();
             map.put("key", "value");
         }
-        System.out.println("Map size: " + map.size()); 
+        System.out.println("Map size: " + map.size());
         
         BrokenJava obj = new BrokenJava();
         new Thread(() -> obj.executeTask1()).start();
