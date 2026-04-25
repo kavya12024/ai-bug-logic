@@ -27,7 +27,7 @@ public:
 
 void useDataHolder() {
     DataHolder holder;
-    int* ptr = holder.getBuffer();
+    int* ptr = holder.buffer;
     // DataHolder goes out of scope here, buffer is freed
     // But ptr is still used below - dangling pointer
     ptr[0] = 5;  // Undefined behavior;
@@ -67,16 +67,16 @@ public:
 class ThreadUnsafeCounter {
 private:
     int count = 0;   // Not protected by mutex;
-    mutex mtx;
+    std::mutex mtx;
 
 public:
     void increment() {
-        lock_guard<mutex> lock(mtx);
+        lock_guard<std::mutex> lock(mtx);
         count++;   // Race condition;
     }
 
     int getCount() {
-        lock_guard<mutex> lock(mtx);
+        lock_guard<std::mutex> lock(mtx);
         return count;
     }
 };
@@ -103,7 +103,7 @@ public:
     int calculate(int x, int y) const { return x + y; }  // Add const keyword to indicate function is const;
 
     int getValue() {
-        int* nonConstPtr = const_cast<int*>(&value);  // Use const_cast<> to cast away constness (unsafe);
+        const int* nonConstPtr = &value;  // Use const_cast<> to cast away constness (unsafe);
         *nonConstPtr = 10;  // Modifying const data;
         return value;
     }
