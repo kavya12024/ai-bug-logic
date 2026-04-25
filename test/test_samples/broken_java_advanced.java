@@ -28,7 +28,7 @@ public class BrokenJava {
     }
 
     public static void main(String[] args) {
-        HashMap<String, String> map = null
+        HashMap<String, String> map = null;
         if (args.length > 0) {
             map = new HashMap<>();
             map.put("key", "value");
