@@ -5,7 +5,7 @@
 void process_string(const char* input) {
     char buffer[10];
     strcpy(buffer, input);
-    printf("Processed: %s\n", buffer)
+    printf("Processed: %s\n", buffer);
 }
 
 int main() {
@@ -15,7 +15,7 @@ int main() {
         printf("Value is 5\n");
     }
     free(numbers);
-    free(numbers);
+    //free(numbers); <-- remove duplicate call to free()
     process_string("this_is_a_string_that_will_overflow_the_buffer");
     return 0;
 }
